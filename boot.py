@@ -1,3 +1,4 @@
+import sensor,image,lcd,time
 import KPU as kpu
 from machine import I2C
 
@@ -25,7 +26,7 @@ sensor.set_hmirror(1)
 sensor.set_vflip(1)
 sensor.run(1)
 clock = time.clock()
-classes = ['person']
+classes = ['aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 'car', 'cat', 'chair', 'cow', 'diningtable', 'dog', 'horse', 'motorbike', 'person', 'pottedplant', 'sheep', 'sofa', 'train', 'tvmonitor']
 task = kpu.load(0x800000)
 anchor = (1.08, 1.19, 3.42, 4.41, 6.63, 11.38, 9.42, 5.11, 16.62, 10.52)
 a = kpu.init_yolo2(task, 0.5, 0.3, 5, anchor)
@@ -37,12 +38,23 @@ while(True):
     #print(clock.fps())
     if code:
         for i in code:
+            if (i.classid()==14):
+                dataperson=1
+                print(dataperson)
+            else:
+                dataperson=0
+                print(dataperson)
             a=img.draw_rectangle(i.rect())
             a = lcd.display(img)
-            a=img.draw_string(i.x(), i.y()+12, 'Person', color=(0, 0, 0), scale=3)
+            a=img.draw_string(i.x(), i.y()+12, classes[i.classid()], color=(0, 0, 0), scale=3)
+
             for i in code:
-                lcd.draw_string(i.x(), i.y()+12, 'Person', lcd.RED, lcd.WHITE)
+                lcd.draw_string(i.x(), i.y(), classes[i.classid()], lcd.RED, lcd.WHITE)
+
+
 
     else:
         a = lcd.display(img)
 a = kpu.deinit(task)
+
+
