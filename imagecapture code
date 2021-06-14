@@ -40,7 +40,7 @@ boot_pin = 16 # board_info.BOOT_KEY
 fm.register(boot_pin, fm.fpioa.GPIOHS0)
 key = GPIO(GPIO.GPIOHS0, GPIO.PULL_UP)
 
-######################################################
+#####################################################
 
 #### main ####
 def capture_main(key):
